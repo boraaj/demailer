@@ -87,9 +87,10 @@ def analyze_header(eml_path):
     print(tabulate(auth_table, headers=["Check", "Result"], tablefmt="grid"))
     print("\n" + "="*50)
 
-    if __name__ == "__main__":
-        if len(sys.argv) < 2:
-            print("Use: python demailer.py <path_to_eml_file>")
-        else:
-            eml_file = sys.argv[1]
-            analyze_header(eml_file)
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Use: python demailer.py <path_to_eml_file>")
+    else:
+        eml_file = sys.argv[1]
+        analyze_header(eml_file)
