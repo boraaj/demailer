@@ -1,7 +1,7 @@
-Crear entorno virtual
+Create virtual environment
 
 ``python -m venv venv``
 
-Activarlo
+Activating
 
 ``.\venv\Scripts\activate``
