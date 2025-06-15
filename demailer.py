@@ -48,7 +48,7 @@ def analyze_header(eml_path):
             server_info = header.split(";")[0].replace('\n', ' ').strip()
             email_route.append([f"Hop {i+1}", server_info, ip_str])
         print(tabulate(email_route, headers=[
-              "Hop", "Server", "IPs"], tablefmt="grid"))
+              "Hop", "Server", "IPs"], tablefmt="grid", maxcolwidths=[None, 70, None]))
     else:
         print("'Received' Headers not found")
 
