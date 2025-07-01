@@ -14,6 +14,6 @@ Once finish working. Exit VEnv
 
 ``deactivate``
 
-Use: 
+How to use (with suspicious email):
 
-``python demailer.py <path to eml file>``
+``python ./demailer.py ./samples/sample-suspicious-1.eml``
