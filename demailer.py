@@ -56,27 +56,35 @@ def analyze_header(eml_path):
 
     print("\n🛡️ AUTH RESULTS")
 
-    spf_status = "Not Found"
-    if 'spf=pass' in auth_results:
-        spf_status = "✅ Pass"
-    elif 'spf=fail' in auth_results:
-        spf_status = "❌ Fail"
-    elif 'spf=softfail' in auth_results:
-        spf_status = "⚠️ Softfail"
-    elif 'spf=neutral' in auth_results:
-        spf_status = "❓ Neutral"
+    if auth_results == 'Not Found':
+        print(">> ⚠️ WARNING: 'Authentication-Results' Header Not Found!!")
+        print(">> This might mean that the email was handle by a non-standard server")
 
-    dkim_status = "Not Found"
-    if 'dkim=pass' in auth_results:
-        dkim_status = "✅ Pass"
-    elif 'dkim=fail' in auth_results:
-        dkim_status = "❌ Fail"
+        spf_status = "❓ Unknown"
+        dkim_status = "❓ Unknown"
+        dmarc_status = "❓ Unknown"
+    else:
+        spf_status = "🚫 Not Specified"
+        if 'spf=pass' in auth_results:
+            spf_status = "✅ Pass"
+        elif 'spf=fail' in auth_results:
+            spf_status = "❌ Fail"
+        elif 'spf=softfail' in auth_results:
+            spf_status = "⚠️ Softfail"
+        elif 'spf=neutral' in auth_results:
+            spf_status = "❓ Neutral"
 
-    dmarc_status = "Not Found"
-    if 'dmarc=pass' in auth_results:
-        dmarc_status = "✅ Pass"
-    elif 'dmarc=fail' in auth_results:
-        dmarc_status = "❌ Fail"
+        dkim_status = "🚫 Not Specified"
+        if 'dkim=pass' in auth_results:
+            dkim_status = "✅ Pass"
+        elif 'dkim=fail' in auth_results:
+            dkim_status = "❌ Fail"
+
+        dmarc_status = "🚫 Not Specified"
+        if 'dmarc=pass' in auth_results:
+            dmarc_status = "✅ Pass"
+        elif 'dmarc=fail' in auth_results:
+            dmarc_status = "❌ Fail"
 
     auth_table = [
         ["SPF (Sender Policy Framework)", spf_status],
