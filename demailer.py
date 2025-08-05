@@ -22,6 +22,24 @@ def clean_screen():
         os.system('clear')
 
 
+def option_headers_analyzer():
+    # Providing .eml path
+    try:
+        clean_screen()
+        home_path = "" if os.name == "posix" else ""
+        src_path = inquirer.filepath(
+            message="Provide the path to the .eml file (Press tab to autocomplete / Ctrl + c to go back): ",
+            default=home_path,
+            validate=PathValidator(
+                is_file=True, message="Input is not a file"),
+            only_files=False,
+        ).execute()
+        analyze_header(src_path)
+    except KeyboardInterrupt:
+        print("going back")
+        main()
+
+
 def analyze_header(eml_path):
     """
     Analize the headers from a .eml file and displays a security report
@@ -29,8 +47,10 @@ def analyze_header(eml_path):
 
     clean_screen()
 
-    if not eml_path.find(".eml"):
-        print(f"❌ Error: File '{eml_path}' not found ❌ ")
+    extension = ".eml"
+
+    if extension not in eml_path:
+        print(f"❌ Error: File '{eml_path}' is not a .eml file ❌ ")
         return
 
     try:
@@ -124,33 +144,43 @@ def analyze_header(eml_path):
 
 def main():
     # Menu function.
-    action = inquirer.select(
-        message="Select the option: ",
-        choices=[
-            "Header Analyzer",
-            Choice(value=None, name="Exit")
-        ],
-        default=None,
-    ).execute()
 
-    if action == "Header Analyzer":
-        # Providing .eml path
-        home_path = "." if os.name == "posix" else "."
-        src_path = inquirer.filepath(
-            message="Please, provide the path to the .eml file: ",
-            default=home_path,
-            validate=PathValidator(
-                is_file=True, message="Input is not a file"),
-            only_files=False,
-        ).execute()
-        analyze_header(src_path)
+    while True:
+        try:
+            clean_screen()
+            title()
+            action = inquirer.select(
+                message="Select the option: ",
+                choices=[
+                    "Header Analyzer",
+                    Choice(value=None, name="Exit")
+                ],
+                default=None,
+            ).execute()
+        except KeyboardInterrupt:
+            clean_screen()
+            print("Exiting")
+            break
+
+        try:
+            if action == "Header Analyzer":
+                # Providing .eml path
+                option_headers_analyzer()
+            else:
+                break
+        except KeyboardInterrupt:
+            clean_screen()
+            print("Exiting")
+            break
 
 
 if __name__ == "__main__":
-    title()
     main()
     # if len(sys.argv) < 2:
     #     print("Use: python demailer.py <path_to_eml_file>")
     # else:
     #     eml_file = sys.argv[1]
     #     analyze_header(eml_file)
+
+# TODO
+# Control the exit function. It seems that I have to push exit or CTRL + C the number of times I entered the header option.
